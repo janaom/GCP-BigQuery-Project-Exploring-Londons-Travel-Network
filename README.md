@@ -1,9 +1,10 @@
 # GCP-BigQuery-Project-Exploring-Londons-Travel-Network
 
 Use BigQuery to build a project. Use SQL to analyze a database containing information about Transport for London journeys over 12 years.
-This project is based on DataCamp project [Exploring London's Travel Network] (https://app.datacamp.com/learn/projects/exploring_londons_travel_network)
+This project is based on DataCamp project [Exploring London's Travel Network](https://app.datacamp.com/learn/projects/exploring_londons_travel_network).
+
 You can find my solutions here: https://app.datacamp.com/workspace/w/0b014417-c584-4c69-aa51-e56cdfef8d84
-Try to build your project using DataCamp Workspace. Three SQL cells will be created for you in the Workspace. To access the Google BigQuery database, you will need to select data using the syntax `FROM TFL.JOURNEYS` (ensure you use upper-case).
+Try to build your project using DataCamp Workspaces. Three SQL cells will be created for you in the Workspace. To access the Google BigQuery database, you will need to select data using the syntax `FROM TFL.JOURNEYS` (ensure you use upper-case).
 
 # Context
 London, or as the Romans called it "Londonium"! Home to [over 8.5 million residents](https://app.datacamp.com/workspace/external-link?url=https%3A%2F%2Fwww.ons.gov.uk%2Fpeoplepopulationandcommunity%2Fpopulationandmigration%2Fpopulationestimates%2Fbulletins%2Fpopulationandhouseholdestimatesenglandandwales%2Fcensus2021unroundeddata%23population-and-household-estimates-england-and-wales-data) who speak over [300 languages](https://app.datacamp.com/workspace/external-link?url=https%3A%2F%2Fweb.archive.org%2Fweb%2F20080924084621%2Fhttp%3A%2F%2Fwww.cilt.org.uk%2Ffaqs%2Flangspoken.htm). While the City of London is a little over one square mile (hence its nickname "The Square Mile"), Greater London has grown to encompass 32 boroughs spanning a total area of 606 square miles!
@@ -27,7 +28,7 @@ Write three SQL queries to answer the following questions:
 
 # Solutions
 
-1) most_popular_transport_types
+## most_popular_transport_types
 ```SQL
 -- most_popular_transport_types
 SELECT journey_type, SUM(journeys_millions) AS total_journeys_millions
@@ -37,7 +38,16 @@ ORDER BY total_journeys_millions DESC;
 ```
 ![image](https://github.com/janaom/GCP-BigQuery-Project-Exploring-Londons-Travel-Network/assets/83917694/057e4490-e257-4280-8453-130405a95078)
 
-2) emirates_airline_popularity
+In this query:
+- `SELECT journey_type` selects the journey_type column.
+- `SUM(journeys_millions) AS total_journeys_millions` calculates the total number of journeys (journeys_millions) for each journey_type and aliases the result as total_journeys_millions.
+- `FROM TFL.JOURNEYS` specifies the table TFL.JOURNEYS from which the data is being retrieved.
+- `GROUP BY journey_type` groups the rows by journey_type, ensuring that each unique journey_type is aggregated separately.
+- `ORDER BY total_journeys_millions DESC` sorts the result set in descending order based on the total_journeys_millions column.
+
+
+
+## emirates_airline_popularity
 ```SQL
 -- emirates_airline_popularity
 SELECT month, year, ROUND(SUM(journeys_millions), 2) AS rounded_journeys_millions
@@ -49,7 +59,18 @@ LIMIT 5;
 ```
 ![image](https://github.com/janaom/GCP-BigQuery-Project-Exploring-Londons-Travel-Network/assets/83917694/eeaaf6a4-7bd3-4728-a045-c8dfb5f9417d)
 
-3) least_popular_years_tube
+In this code:
+- `SELECT month, year` selects the month and year columns.
+- `ROUND(SUM(journeys_millions), 2) AS rounded_journeys_millions` calculates the total number of journeys (journeys_millions) for each month and year, rounds it to two decimal places, and aliases it as rounded_journeys_millions.
+- `FROM TFL.JOURNEYS` specifies the table TFL.JOURNEYS from which the data is being retrieved.
+- `WHERE journey_type = 'Emirates Airline' AND journeys_millions IS NOT NULL` filters the data to include only rows where the journey_type is 'Emirates Airline' and journeys_millions is not null.
+- `GROUP BY month, year` groups the rows by month and year, ensuring that the aggregation is performed for each unique combination of month and year.
+- `ORDER BY rounded_journeys_millions DESC, year ASC` orders the result set in descending order based on rounded_journeys_millions and ascending order based on year.
+- `LIMIT 5` limits the result to the top 5 rows, as required in the task.
+
+
+
+## least_popular_years_tube
 ```SQL
 -- least_popular_years_tube
 SELECT year, journey_type, SUM(journeys_millions) AS total_journeys_millions
@@ -61,3 +82,11 @@ LIMIT 5;
 ```
 ![image](https://github.com/janaom/GCP-BigQuery-Project-Exploring-Londons-Travel-Network/assets/83917694/cd41dfc4-023c-48c6-a371-2f8367d4c788)
 
+In this code:
+- `SELECT year, journey_type` selects the year and journey_type columns.
+- `SUM(journeys_millions) AS total_journeys_millions` calculates the total number of journeys (journeys_millions) for each year and journey type and aliases it as total_journeys_millions.
+- `FROM TFL.JOURNEYS` specifies the table TFL.JOURNEYS from which the data is being retrieved.
+- `WHERE journey_type IN ('Underground & DLR')` filters the data to include only rows where the journey_type is either 'Underground' or 'DLR'.
+- `GROUP BY year, journey_type` groups the rows by year and journey_type, ensuring that the aggregation is performed for each unique combination of year and journey type.
+- `ORDER BY total_journeys_millions ASC` orders the result set in ascending order based on total_journeys_millions.
+- `LIMIT 5` limits the result to the top 5 rows, which will be the years with the lowest volume of Underground & DLR journeys.
