@@ -9,5 +9,4 @@ Write three SQL queries to answer the following questions:
 2. Which five months and years were the most popular for the Emirates Airline? Return an output containing `month`, `year`, and `journeys_millions`, with the latter rounded to two decimal places and aliased as `rounded_journeys_millions`. Exclude null values and order the results by 1) `rounded_journeys_millions` in descending order and 2) `year` in ascending order, saving the result as `emirates_airline_popularity`.
 3. Find the *five years* with the lowest volume of `Underground & DLR` journeys, saving as `least_popular_years_tube`. The results should contain the columns `year`, `journey_type`, and `total_journeys_millions`.
 
-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
-![image](https://github.com/janaom/GCP-BigQuery-Project-Exploring-Londons-Travel-Network/assets/83917694/f01cc417-6b0e-403c-ad4a-17d97b5533ee)
+https://app.datacamp.com/workspace/w/0b014417-c584-4c69-aa51-e56cdfef8d84
